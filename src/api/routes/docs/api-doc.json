@@ -1,0 +1,275 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "General Product",
+		"description": "General Product Api Service Documentation",
+		"contact": {
+			"email": "isalriz9@gmail.com"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		},
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "",
+			"description": "SwaggerHub API Auto Mocking"
+		}
+	],
+	"tags": [
+		{
+			"name": "admins",
+			"description": "Secured Admin-only calls"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+		  "bearerAuth": {
+			"type": "http",
+			"scheme": "bearer",
+			"bearerFormat": "JWT"
+		  }
+		}
+	  },
+	"security": [
+		{
+		  "bearerAuth": []
+		}
+	],
+	"paths": {
+		"/v1/register": {
+		  "post": {
+			"summary": "Register a new user",
+			"tags": ["User"],
+			"requestBody": {
+			  "description": "User registration data",
+			  "required": true,
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "object",
+					"properties": {
+					  "email": {
+						"type": "string",
+						"format": "email",
+						"example": "Testing1@gmail.me",
+						"description": "User's email address"
+					  },
+					  "username": {
+						"type": "string",
+						"example": "Friz",
+						"description": "User's username"
+					  },
+					  "password": {
+						"type": "string",
+						"example": "Friz",
+						"description": "User's password"
+					  }
+					},
+					"required": ["email", "username", "password"]
+				  }
+				}
+			  }
+			}
+		  }
+		},
+		"/v1/login": {
+			"post": {
+			  "summary": "User login",
+			  "tags": ["User"],
+			  "requestBody": {
+				"description": "User login credentials",
+				"required": true,
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "type": "object",
+					  "properties": {
+						"username": {
+						  "type": "string",
+						  "example": "Friz",
+						  "description": "User's username"
+						},
+						"password": {
+						  "type": "string",
+						  "example": "Test1234",
+						  "description": "User's password"
+						}
+					  },
+					  "required": ["username", "password"]
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "/v1/products": {
+			"get": {
+			  "summary": "Get products",
+			  "tags": ["Products"],
+			  "parameters": [
+				{
+				  "name": "name",
+				  "in": "query",
+				  "description": "Product name to filter by",
+				  "schema": {
+					"type": "string"
+				  }
+				},
+				{
+				  "name": "price",
+				  "in": "query",
+				  "description": "Product price to filter by",
+				  "schema": {
+					"type": "number"
+				  }
+				},
+				{
+				  "name": "sort",
+				  "in": "query",
+				  "example":"price:desc",
+				  "description": "Sort order for products (e.g: price:asc)",
+				  "schema": {
+					"type": "string"
+				  }
+				}
+			  ],
+			  "security": [
+				{
+				  "bearerAuth": []
+				}
+			  ]
+			},
+			"post": {
+			  "summary": "Create a new product",
+			  "tags": ["Products"],
+			  "requestBody": {
+				"description": "Product data",
+				"required": true,
+				"content": {
+				  "application/json": {
+					"schema": {
+					  "type": "object",
+					  "properties": {
+						"name": {
+						  "type": "string",
+						  "description": "Product name",
+						  "example": "Product Kecantikan"
+						},
+						"price": {
+						  "type": "number",
+						  "description": "Product price",
+						  "example": 30000.500
+						},
+						"quantity": {
+							"type": "number",
+							"description": "Product Quantity",
+							"example": 20
+						},
+						"description": {
+							"type": "string",
+							"description": "Product Description",
+							"example": "Product Kecantikan Pertama di Rumahmu"
+						}
+					  },
+					  "required": ["name", "price"]
+					}
+				  }
+				}
+			  },
+			  "security": [
+				{
+				  "bearerAuth": []
+				}
+			  ]
+			}
+		  },
+		  "/v1/products/{id}": {
+			"delete": {
+			  "summary": "Delete a product",
+			  "tags": ["Products"],
+			  "parameters": [
+				{
+				  "name": "id",
+				  "in": "path",
+				  "description": "ID of the product to delete",
+				  "required": true,
+				  "example": 1,
+				  "schema": {
+					"type": "integer",
+					"format": "int64"
+				  }
+				}
+			],
+			"security": [
+				{
+				  "bearerAuth": []
+				}
+			]
+		  },
+		  "get": {
+			"summary": "Get product details",
+			"tags": ["Products"],
+			"parameters": [
+			  {
+				"name": "id",
+				"in": "path",
+				"description": "Product ID",
+				"required": true,
+				"example": 1,
+				"schema": {
+				  "type": "integer",
+				  "format": "int64"
+				}
+			  }
+			],
+			"security": [
+				{
+				  "bearerAuth": []
+				}
+			]
+		  },
+		  "put": {
+			"summary": "Update a product",
+			"tags": ["Products"],
+			"parameters": [
+			  {
+				"name": "id",
+				"in": "path",
+				"description": "ID of the product to update",
+				"required": true,
+				"example": 1,
+				"schema": {
+				  "type": "integer",
+				  "format": "int64"
+				}
+			  }
+			],
+			"requestBody": {
+			  "description": "Updated product data",
+			  "required": true,
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"type": "object",
+					"properties": {
+					  "quantity": {
+						"type": "number",
+						"description": "Product quantity"
+					  }
+					}
+				  }
+				}
+			  }
+			},
+			"security": [
+				{
+				  "bearerAuth": []
+				}
+			]
+		  }
+		}		
+	}
+}
